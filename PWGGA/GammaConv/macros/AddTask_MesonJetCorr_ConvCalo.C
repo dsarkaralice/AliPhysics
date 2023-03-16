@@ -59,6 +59,7 @@ void AddTask_MesonJetCorr_ConvCalo(
   Double_t smearPar = 0.,                // conv photon smearing params
   Double_t smearParConst = 0.,           // conv photon smearing params
   Bool_t doPrimaryTrackMatching = kTRUE, // enable basic track matching for all primary tracks to cluster
+  bool useCentralEvtSelection = true,
   // subwagon config
   TString additionalTrainConfig = "0" // additional counter for trainconfig
 )
@@ -236,7 +237,7 @@ void AddTask_MesonJetCorr_ConvCalo(
     //---------------------------------------
     // configs for eta meson pp 13 TeV
     //---------------------------------------
-   else if (trainConfig == 1002) {
+  } else if (trainConfig == 1002) {
     cuts.AddCutPCMCalo("00010103", "0dm00009f9730000dge0404000", "411790009fe30230000", "2r63103l00000010"); // in-Jet, mass cut eta: 0.5-0.6, rotation back
   } else if (trainConfig == 1003) {
     cuts.AddCutPCMCalo("00010103", "0dm00009f9730000dge0404000", "411790009fe30230000", "2163103l00000010"); // in-Jet, mass cut eta: 0.5-0.6, mixed jet back
@@ -400,7 +401,7 @@ void AddTask_MesonJetCorr_ConvCalo(
   task->SetDoMesonQA(enableQAMesonTask); //Attention new switch for Pi0 QA
                                          //   task->SetDoClusterQA(enableQAClusterTask);  //Attention new switch small for Cluster QA
   task->SetUseTHnSparseForResponse(enableTHnSparse);
-
+  task->SetDoUseCentralEvtSelection(useCentralEvtSelection);
   //connect containers
   TString nameContainer = Form("MesonJetCorrelation_ConvCalo_%i_%i%s%s", meson, trainConfig, corrTaskSetting.EqualTo("") == true ? "" : Form("_%s", corrTaskSetting.Data()), nameJetFinder.EqualTo("") == true ? "" : Form("_%s", nameJetFinder.Data()) );
   AliAnalysisDataContainer* coutput = mgr->CreateContainer(nameContainer, TList::Class(), AliAnalysisManager::kOutputContainer, Form("MesonJetCorrelation_ConvCalo_%i_%i.root", meson, trainConfig));
